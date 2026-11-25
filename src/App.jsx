@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import "./App.css";
 import PaintingCanvas from "./PaintingCanvas";
+import FluidBlob from "./FluidBlob";
 
 function App() {
   const fileInputRef = useRef(null);
@@ -165,75 +166,7 @@ function App() {
               pointerY.set(0);
             }}
           >
-            <div className="art-glow" />
-
-            <div className="art-orbit orbit-one" />
-            <div className="art-orbit orbit-two" />
-
-            <motion.div
-              className="floating-label label-top"
-              animate={{ y: [0, -9, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <Sparkles size={14} />
-              <span>CREATIVITY, REIMAGINED</span>
-            </motion.div>
-
-            <motion.div
-              className="art-frame"
-              animate={{ y: [0, -10, 0], rotate: [-5, -3, -5] }}
-              transition={{
-                duration: 7,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <div className="art-frame-inner">
-                <div className="art-sun" />
-
-                <div className="art-hill hill-back" />
-                <div className="art-hill hill-middle" />
-                <div className="art-hill hill-front" />
-
-                <div className="art-brush brush-one" />
-                <div className="art-brush brush-two" />
-                <div className="art-brush brush-three" />
-
-                <div className="art-paint-specks">
-                  <i /><i /><i /><i /><i /><i /><i />
-                </div>
-
-                <div className="art-caption">
-                  <span>FIG. 001</span>
-                  <span>THE ART OF AI</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="floating-label label-bottom"
-              animate={{ y: [0, 8, 0] }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <div className="mini-status-dot" />
-              <span>MADE STROKE BY STROKE</span>
-            </motion.div>
-
-            <motion.div
-              className="floating-number"
-              animate={{ rotate: [0, 8, 0] }}
-              transition={{ duration: 6, repeat: Infinity }}
-            >
-              01<span>/</span>∞
-            </motion.div>
+            <FluidBlob />
           </motion.div>
         </section>
 
@@ -353,7 +286,7 @@ function App() {
               <label>Painting style</label>
 
               <div className="style-options">
-                {["Impressionist", "Pencil Sketch", "Thick Impasto"].map(
+                {["Impressionist", "Pencil Sketch", "Watercolor Blooms"].map(
                   (item) => (
                     <button
                       key={item}
@@ -370,7 +303,7 @@ function App() {
               </div>
 
               <p className="setting-note">
-                Choose how each stroke is drawn: expressive paint, graphite sketching, or thick textured pigment.
+                Choose your finish: expressive brushwork, graphite sketching, or broad watercolor brushstrokes with ragged edges, dry-brush texture and layered pigment.
               </p>
             </div>
 
@@ -454,7 +387,7 @@ function App() {
 
               <div>
                 <strong>Layered brushstroke engine</strong>
-                <p>Textured pigment, bristle detail and multi-pass layering.</p>
+                <p>Soft, irregular watercolor blooms with feathered edges and layered pigment.</p>
               </div>
             </div>
 

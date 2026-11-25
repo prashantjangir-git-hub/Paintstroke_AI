@@ -245,7 +245,7 @@ function planLayerStrokes(layer, data, count, width, height, brushSize, style) {
     const blue = pixels[index + 2];
     const luminance = Math.round(0.299 * red + 0.587 * green + 0.114 * blue);
     const isPencil = style === "Pencil Sketch";
-    const isImpasto = style === "Thick Impasto";
+    const isWatercolor = style === "Watercolor Blooms";
     const color = isPencil
       ? `rgb(${Math.max(25, luminance - 35)}, ${Math.max(25, luminance - 35)}, ${Math.max(25, luminance - 35)})`
       : `rgb(${red}, ${green}, ${blue})`;
@@ -258,13 +258,15 @@ function planLayerStrokes(layer, data, count, width, height, brushSize, style) {
       x,
       y,
       angle: angle + (isPencil ? randomBetween(-0.12, 0.12) : 0),
-      length: length * (isImpasto ? 1.12 : isPencil ? 0.82 : 1),
+      length: length * (isWatercolor ? 0.55 : isPencil ? 0.82 : 1),
       color,
-      width: Math.max(0.65, baseWidth * (isPencil ? 0.38 : isImpasto ? 1.75 : 1)),
+      width: Math.max(0.65, baseWidth * (isPencil ? 0.38 : isWatercolor ? 1.9 : 1)),
       opacity: isPencil
         ? randomBetween(0.22, 0.58)
-        : isImpasto
-          ? randomBetween(0.88, 1)
+        : isWatercolor
+          ? layer.name === "Final touches"
+            ? randomBetween(0.07, 0.13)
+            : randomBetween(0.09, 0.17)
           : randomBetween(layer.opacity[0], layer.opacity[1]),
       curve: length * randomBetween(isPencil ? -0.04 : -0.12, isPencil ? 0.04 : 0.12),
     };
@@ -533,47 +535,48 @@ function PaintingCanvas({ image, brushSize, strokeCount, renderSpeed, style, pai
           return;
         }
 
-        // Thick Impasto: a darker paint ridge, loaded pigment body, and a
-        // narrow offset highlight simulate raised, overlapping oil paint.
-        if (style === "Thick Impasto") {
+        // Watercolor Blooms: one irregular wash and a lighter inner wash.
+        // source-over keeps repeated strokes from becoming muddy/dark.
+        // No per-stroke blur, satellite loops, or granulation loops.
+        if (style === "Watercolor Blooms") {
           ctx.save();
-          const normalX = Math.cos(angle + Math.PI / 2);
-          const normalY = Math.sin(angle + Math.PI / 2);
-          ctx.lineCap = "round";
-          ctx.lineJoin = "round";
-          ctx.beginPath();
-          ctx.moveTo(x + normalX * lineWidth * 0.12, y + normalY * lineWidth * 0.12);
-          ctx.quadraticCurveTo(
-            curveX + normalX * lineWidth * 0.12,
-            curveY + normalY * lineWidth * 0.12,
-            endX + normalX * lineWidth * 0.12,
-            endY + normalY * lineWidth * 0.12
-          );
-          ctx.strokeStyle = "rgba(25, 18, 12, 0.22)";
-          ctx.lineWidth = lineWidth * 1.12;
-          ctx.globalAlpha = opacity;
-          ctx.stroke();
+          ctx.globalCompositeOperation = "source-over";
 
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.quadraticCurveTo(curveX, curveY, endX, endY);
-          ctx.strokeStyle = color;
-          ctx.lineWidth = lineWidth;
-          ctx.globalAlpha = opacity;
-          ctx.stroke();
+          const radiusX = lineWidth * randomBetween(1.55, 2.35);
+          const radiusY = lineWidth * randomBetween(1.2, 1.9);
+          const rotation = randomBetween(0, Math.PI * 2);
 
-          ctx.beginPath();
-          ctx.moveTo(x - normalX * lineWidth * 0.2, y - normalY * lineWidth * 0.2);
-          ctx.quadraticCurveTo(
-            curveX - normalX * lineWidth * 0.2,
-            curveY - normalY * lineWidth * 0.2,
-            endX - normalX * lineWidth * 0.2,
-            endY - normalY * lineWidth * 0.2
-          );
-          ctx.strokeStyle = "rgba(255, 244, 218, 0.34)";
-          ctx.lineWidth = Math.max(0.7, lineWidth * 0.16);
-          ctx.globalAlpha = opacity * 0.8;
-          ctx.stroke();
+          const blobPath = (scale, wobble) => {
+            const count = 14;
+            ctx.beginPath();
+            for (let i = 0; i < count; i++) {
+              const a = (i / count) * Math.PI * 2;
+              const wave =
+                1 +
+                Math.sin(a * 3 + rotation) * 0.13 +
+                Math.cos(a * 5 - rotation) * 0.07 +
+                randomBetween(-wobble, wobble);
+              const rx = Math.cos(a) * radiusX * scale * wave;
+              const ry = Math.sin(a) * radiusY * scale * wave;
+              const px = x + rx * Math.cos(rotation) - ry * Math.sin(rotation);
+              const py = y + rx * Math.sin(rotation) + ry * Math.cos(rotation);
+              if (i === 0) ctx.moveTo(px, py);
+              else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+          };
+
+          // Broad translucent edge preserves the soft, uneven bloom silhouette.
+          blobPath(1.12, 0.08);
+          ctx.fillStyle = color;
+          ctx.globalAlpha = opacity * 0.48;
+          ctx.fill();
+
+          // A smaller wash adds pigment variation without stacking many blobs.
+          blobPath(0.78, 0.12);
+          ctx.globalAlpha = opacity * 0.34;
+          ctx.fill();
+
           ctx.restore();
           return;
         }
@@ -635,14 +638,24 @@ function PaintingCanvas({ image, brushSize, strokeCount, renderSpeed, style, pai
         if (cancelled) return;
 
         const speed = settingsRef.current.renderSpeed || 1;
-        const batchSize = Math.min(3000, Math.max(1, Math.round(strokesPerFrame * speed)));
-        for (
-          let i = 0;
-          i < batchSize && cursor < strokes.length;
-          i++
+        // Work in short frame slices rather than drawing a fixed huge batch.
+        // This adapts to device speed and yields to input/painting UI.
+        const frameBudgetMs = 7;
+        const startedAt = performance.now();
+        const batchLimit = Math.min(
+          3000,
+          Math.max(1, Math.round(strokesPerFrame * speed))
+        );
+        let drawn = 0;
+
+        while (
+          cursor < strokes.length &&
+          drawn < batchLimit &&
+          performance.now() - startedAt < frameBudgetMs
         ) {
           drawStroke(strokes[cursor]);
           cursor++;
+          drawn++;
         }
 
         const layerFraction = strokes.length
