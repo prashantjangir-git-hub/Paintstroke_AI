@@ -4,12 +4,12 @@
 
 **Paintstroke AI** is an experimental browser-based photo-to-painting application that transforms ordinary photographs into artistic paintings through thousands of individually rendered brushstrokes.
 
-Instead of simply applying a filter, Paintstroke AI recreates the painting process — building up colors, shaping forms, adding details, and applying finishing touches, one stroke at a time.
+Instead of simply applying a filter, Paintstroke AI recreates the painting process, i.e. building up colors, shaping forms, adding details, and applying finishing touches, one stroke at a time.
 
 <table>
   <tr>
     <td>
-      🌐 <strong><a href="https://github.io">Live Demo</a></strong>
+      🌐 <strong><a href="https://prashantjangir-git-hub.github.io/Paintstroke_AI/">Live Demo</a></strong>
     </td>
   </tr>
 </table>
@@ -20,7 +20,7 @@ What if you could watch a photograph being painted by an artist?
 
 Paintstroke AI explores this idea through a custom procedural painting engine built with HTML Canvas. It analyzes image colors and visual structures to generate textured brushstrokes that gradually recreate the original photograph as a painting.
 
-The result is not just an image transformation — it's a visualization of the artistic process itself.
+The result is not just an image transformation, it's a visualization of the artistic process itself.
 
 ## 🚀 Features
 
@@ -39,13 +39,19 @@ The result is not just an image transformation — it's a visualization of the a
 
 <!-- Add screenshots of your application here -->
 
-| Landing Page | Painting Workspace |
-|:---:|:---:|
-| Add landing page screenshot | Add workspace screenshot |
+### Landing Page
+<img width="1107" height="610" alt="image" src="https://github.com/user-attachments/assets/d279b77c-b858-43ff-b9b5-5d507be2d3c3" />
 
-| Painting in Progress | Final Artwork |
-|:---:|:---:|
-| Add progress screenshot | Add completed painting screenshot |
+### Painting Workspace
+<img width="1077" height="658" alt="Screenshot 2026-11-25 190332" src="https://github.com/user-attachments/assets/34afaf53-05f6-44f2-b6c4-1772dc2cb9a0" />
+
+### Painting in Progress
+<img width="1054" height="679" alt="Screenshot 2026-11-25 190731" src="https://github.com/user-attachments/assets/623aeab1-b05c-464b-847a-59ff709b4986" />
+
+
+### Final Artwork
+<img width="1047" height="675" alt="Screenshot 2026-11-25 190752" src="https://github.com/user-attachments/assets/90d97edc-5721-425c-8d76-20e477efc1e7" />
+
 
 ## 🧠 How It Works
 
