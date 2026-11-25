@@ -200,7 +200,7 @@ function planStrokeCounts(total, width, height, brushSize) {
 }
 
 // Decide where and how every stroke of one pass is placed.
-function planLayerStrokes(layer, data, count, width, height, brushSize) {
+function planLayerStrokes(layer, data, count, width, height, brushSize, style) {
   const { pixels, brightness } = data;
   const strokes = [];
 
@@ -240,18 +240,33 @@ function planLayerStrokes(layer, data, count, width, height, brushSize) {
       nominalWidth * ratio * randomBetween(0.8, 1.2)
     );
 
+    const red = pixels[index];
+    const green = pixels[index + 1];
+    const blue = pixels[index + 2];
+    const luminance = Math.round(0.299 * red + 0.587 * green + 0.114 * blue);
+    const isPencil = style === "Pencil Sketch";
+    const isImpasto = style === "Thick Impasto";
+    const color = isPencil
+      ? `rgb(${Math.max(25, luminance - 35)}, ${Math.max(25, luminance - 35)}, ${Math.max(25, luminance - 35)})`
+      : `rgb(${red}, ${green}, ${blue})`;
+    const baseWidth = Math.max(
+      1,
+      brushSize * layer.brushScale * randomBetween(0.45, 0.9)
+    );
+
     return {
       x,
       y,
-      angle,
-      length,
-      color: `rgb(${pixels[index]}, ${pixels[index + 1]}, ${pixels[index + 2]})`,
-      width: Math.max(
-        1,
-        brushSize * layer.brushScale * randomBetween(0.45, 0.9)
-      ),
-      opacity: randomBetween(layer.opacity[0], layer.opacity[1]),
-      curve: length * randomBetween(-0.12, 0.12),
+      angle: angle + (isPencil ? randomBetween(-0.12, 0.12) : 0),
+      length: length * (isImpasto ? 1.12 : isPencil ? 0.82 : 1),
+      color,
+      width: Math.max(0.65, baseWidth * (isPencil ? 0.38 : isImpasto ? 1.75 : 1)),
+      opacity: isPencil
+        ? randomBetween(0.22, 0.58)
+        : isImpasto
+          ? randomBetween(0.88, 1)
+          : randomBetween(layer.opacity[0], layer.opacity[1]),
+      curve: length * randomBetween(isPencil ? -0.04 : -0.12, isPencil ? 0.04 : 0.12),
     };
   }
 
@@ -300,12 +315,12 @@ function planLayerStrokes(layer, data, count, width, height, brushSize) {
   return strokes;
 }
 
-function PaintingCanvas({ image, brushSize, strokeCount, paintRequest }) {
+function PaintingCanvas({ image, brushSize, strokeCount, renderSpeed, style, paintRequest }) {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
 
   // Latest settings, readable without re-triggering the paint effect.
-  const settingsRef = useRef({ image, brushSize, strokeCount });
+  const settingsRef = useRef({ image, brushSize, strokeCount, renderSpeed, style });
   // Last "Start painting" click already handled. Starting from the current
   // value stops a stale click from auto-painting a freshly mounted canvas.
   const handledRequestRef = useRef(paintRequest);
@@ -316,7 +331,7 @@ function PaintingCanvas({ image, brushSize, strokeCount, paintRequest }) {
   const [status, setStatus] = useState("Ready to paint");
 
   useEffect(() => {
-    settingsRef.current = { image, brushSize, strokeCount };
+    settingsRef.current = { image, brushSize, strokeCount, renderSpeed, style };
   });
 
   // Reset the canvas when a new photograph is uploaded.
@@ -361,7 +376,7 @@ function PaintingCanvas({ image, brushSize, strokeCount, paintRequest }) {
     if (!paintRequest || paintRequest === handledRequestRef.current) return;
     handledRequestRef.current = paintRequest;
 
-    const { image, brushSize, strokeCount } = settingsRef.current;
+    const { image, brushSize, strokeCount, style } = settingsRef.current;
     if (!image?.url) return;
 
     const canvas = canvasRef.current;
@@ -451,14 +466,17 @@ function PaintingCanvas({ image, brushSize, strokeCount, paintRequest }) {
           counts[layerIndex],
           width,
           height,
-          brush
+          brush,
+          style
         );
         cursor = 0;
 
         // Every layer takes roughly the same number of frames to paint.
+        // Base batch keeps the animation responsive; the speed slider
+        // scales this batch live without regenerating the planned strokes.
         strokesPerFrame = Math.min(
-          1500,
-          Math.max(10, Math.ceil(strokes.length / 120))
+          1800,
+          Math.max(8, Math.ceil(strokes.length / 120))
         );
 
         return true;
@@ -485,25 +503,142 @@ function PaintingCanvas({ image, brushSize, strokeCount, paintRequest }) {
         const curveX = middleX + Math.cos(angle + Math.PI / 2) * curve;
         const curveY = middleY + Math.sin(angle + Math.PI / 2) * curve;
 
+        // Pencil Sketch: fine graphite marks and occasional cross-hatching.
+        if (style === "Pencil Sketch") {
+          ctx.save();
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.strokeStyle = color;
+          ctx.globalAlpha = opacity;
+          ctx.lineWidth = Math.max(0.55, lineWidth);
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.quadraticCurveTo(curveX, curveY, endX, endY);
+          ctx.stroke();
+
+          // A few delicate parallel graphite lines create a hand-sketched grain.
+          const normalX = Math.cos(angle + Math.PI / 2);
+          const normalY = Math.sin(angle + Math.PI / 2);
+          const hatchCount = Math.random() > 0.72 ? 2 : 1;
+          for (let h = 0; h < hatchCount; h++) {
+            const offset = (h + 1) * lineWidth * 0.85;
+            ctx.globalAlpha = opacity * randomBetween(0.22, 0.42);
+            ctx.lineWidth = Math.max(0.4, lineWidth * 0.48);
+            ctx.beginPath();
+            ctx.moveTo(x + normalX * offset, y + normalY * offset);
+            ctx.lineTo(endX + normalX * offset, endY + normalY * offset);
+            ctx.stroke();
+          }
+          ctx.restore();
+          return;
+        }
+
+        // Thick Impasto: a darker paint ridge, loaded pigment body, and a
+        // narrow offset highlight simulate raised, overlapping oil paint.
+        if (style === "Thick Impasto") {
+          ctx.save();
+          const normalX = Math.cos(angle + Math.PI / 2);
+          const normalY = Math.sin(angle + Math.PI / 2);
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.beginPath();
+          ctx.moveTo(x + normalX * lineWidth * 0.12, y + normalY * lineWidth * 0.12);
+          ctx.quadraticCurveTo(
+            curveX + normalX * lineWidth * 0.12,
+            curveY + normalY * lineWidth * 0.12,
+            endX + normalX * lineWidth * 0.12,
+            endY + normalY * lineWidth * 0.12
+          );
+          ctx.strokeStyle = "rgba(25, 18, 12, 0.22)";
+          ctx.lineWidth = lineWidth * 1.12;
+          ctx.globalAlpha = opacity;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.quadraticCurveTo(curveX, curveY, endX, endY);
+          ctx.strokeStyle = color;
+          ctx.lineWidth = lineWidth;
+          ctx.globalAlpha = opacity;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(x - normalX * lineWidth * 0.2, y - normalY * lineWidth * 0.2);
+          ctx.quadraticCurveTo(
+            curveX - normalX * lineWidth * 0.2,
+            curveY - normalY * lineWidth * 0.2,
+            endX - normalX * lineWidth * 0.2,
+            endY - normalY * lineWidth * 0.2
+          );
+          ctx.strokeStyle = "rgba(255, 244, 218, 0.34)";
+          ctx.lineWidth = Math.max(0.7, lineWidth * 0.16);
+          ctx.globalAlpha = opacity * 0.8;
+          ctx.stroke();
+          ctx.restore();
+          return;
+        }
+
+        // Impressionist: layered pigment, fine bristle tracks and restrained highlights.
+        ctx.save();
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.quadraticCurveTo(curveX, curveY, endX, endY);
-
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
         ctx.globalAlpha = opacity;
         ctx.lineCap = "round";
+        ctx.lineJoin = "round";
         ctx.stroke();
 
-        ctx.globalAlpha = 1;
+        const normalX = Math.cos(angle + Math.PI / 2);
+        const normalY = Math.sin(angle + Math.PI / 2);
+        const bristleCount = lineWidth > 3 ? 2 : 1;
+        for (let b = 0; b < bristleCount; b++) {
+          const offset = (b - (bristleCount - 1) / 2) * lineWidth * 0.28;
+          const startX = x + normalX * offset;
+          const startY = y + normalY * offset;
+          const finishX = endX + normalX * offset * 0.7;
+          const finishY = endY + normalY * offset * 0.7;
+
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.quadraticCurveTo(
+            curveX + normalX * offset,
+            curveY + normalY * offset,
+            finishX,
+            finishY
+          );
+          ctx.strokeStyle = b === 0 ? "rgba(255,255,255,0.22)" : "rgba(20,15,12,0.13)";
+          ctx.lineWidth = Math.max(0.45, lineWidth * 0.075);
+          ctx.globalAlpha = opacity * 0.72;
+          ctx.stroke();
+        }
+
+        // Tiny pigment breaks at the ends create a dry-brush edge.
+        if (lineWidth > 2.5 && Math.random() > 0.45) {
+          ctx.beginPath();
+          ctx.arc(
+            endX + randomBetween(-lineWidth * 0.35, lineWidth * 0.35),
+            endY + randomBetween(-lineWidth * 0.35, lineWidth * 0.35),
+            Math.max(0.45, lineWidth * 0.07),
+            0,
+            Math.PI * 2
+          );
+          ctx.fillStyle = color;
+          ctx.globalAlpha = opacity * 0.55;
+          ctx.fill();
+        }
+        ctx.restore();
       }
 
       function animate() {
         if (cancelled) return;
 
+        const speed = settingsRef.current.renderSpeed || 1;
+        const batchSize = Math.min(3000, Math.max(1, Math.round(strokesPerFrame * speed)));
         for (
           let i = 0;
-          i < strokesPerFrame && cursor < strokes.length;
+          i < batchSize && cursor < strokes.length;
           i++
         ) {
           drawStroke(strokes[cursor]);
@@ -562,15 +697,41 @@ function PaintingCanvas({ image, brushSize, strokeCount, paintRequest }) {
           <h3 style={styles.title}>Your painting</h3>
         </div>
 
-        <span style={styles.status}>
-          <span
+        <div style={styles.headerActions}>
+          <span style={styles.status}>
+            <span
+              style={{
+                ...styles.dot,
+                background: progress === 100 ? "#35a77b" : "#c58b42",
+              }}
+            />
+            {status}
+          </span>
+          <button
+            type="button"
             style={{
-              ...styles.dot,
-              background: progress === 100 ? "#35a77b" : "#c58b42",
+              ...styles.downloadButton,
+              opacity: progress === 100 ? 1 : 0.5,
+              cursor: progress === 100 ? "pointer" : "not-allowed",
             }}
-          />
-          {status}
-        </span>
+            disabled={progress !== 100}
+            onClick={() => {
+              const canvas = canvasRef.current;
+              if (!canvas) return;
+              canvas.toBlob((blob) => {
+                if (!blob) return;
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "paintstroke-ai-painting.png";
+                link.click();
+                window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+              }, "image/png");
+            }}
+          >
+            <span aria-hidden="true">↓</span> Download PNG
+          </button>
+        </div>
       </div>
 
       <div style={styles.canvasFrame}>
@@ -627,6 +788,24 @@ const styles = {
     color: "#29251f",
     fontSize: "20px",
     margin: "5px 0 0",
+  },
+  headerActions: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    flexWrap: "wrap",
+  },
+  downloadButton: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "7px",
+    padding: "9px 12px",
+    border: "1px solid #d9c8b4",
+    borderRadius: "8px",
+    background: "#f4ede4",
+    color: "#65472f",
+    fontSize: "11px",
+    fontWeight: 700,
   },
   status: {
     display: "flex",

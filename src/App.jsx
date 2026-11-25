@@ -25,6 +25,7 @@ function App() {
   const [dragging, setDragging] = useState(false);
   const [brushSize, setBrushSize] = useState(5);
   const [strokeCount, setStrokeCount] = useState(5000);
+  const [renderSpeed, setRenderSpeed] = useState(1);
   const [style, setStyle] = useState("Impressionist");
   const [paintRequest, setPaintRequest] = useState(0);
   // Mouse-responsive 3D movement
@@ -352,7 +353,7 @@ function App() {
               <label>Painting style</label>
 
               <div className="style-options">
-                {["Impressionist", "Oil painting", "Watercolor"].map(
+                {["Impressionist", "Pencil Sketch", "Thick Impasto"].map(
                   (item) => (
                     <button
                       key={item}
@@ -369,7 +370,7 @@ function App() {
               </div>
 
               <p className="setting-note">
-                Style controls will be connected to the model later.
+                Choose how each stroke is drawn: expressive paint, graphite sketching, or thick textured pigment.
               </p>
             </div>
 
@@ -384,7 +385,7 @@ function App() {
               <input
                 id="brush-size"
                 type="range"
-                min="1/100"
+                min="1"
                 max="10"
                 value={brushSize}
                 onChange={(e) => setBrushSize(Number(e.target.value))}
@@ -422,14 +423,38 @@ function App() {
 
             <div className="setting-divider" />
 
+            <div className="setting-group">
+              <div className="setting-label-row">
+                <label htmlFor="render-speed">Rendering speed</label>
+                <span className="setting-value">{renderSpeed.toFixed(2)}×</span>
+              </div>
+
+              <input
+                id="render-speed"
+                type="range"
+                min="0.25"
+                max="4"
+                step="0.25"
+                value={renderSpeed}
+                onChange={(e) => setRenderSpeed(Number(e.target.value))}
+              />
+
+              <div className="range-labels">
+                <span>Slow · more gradual</span>
+                <span>Fast · 4×</span>
+              </div>
+            </div>
+
+            <div className="setting-divider" />
+
             <div className="model-info">
               <div className="model-info-icon">
                 <WandSparkles size={17} />
               </div>
 
               <div>
-                <strong>Neural painting engine</strong>
-                <p>Our custom AI model is being trained.</p>
+                <strong>Layered brushstroke engine</strong>
+                <p>Textured pigment, bristle detail and multi-pass layering.</p>
               </div>
             </div>
 
@@ -489,6 +514,8 @@ function App() {
               image={image}
               brushSize={brushSize}
               strokeCount={strokeCount}
+              renderSpeed={renderSpeed}
+              style={style}
               paintRequest={paintRequest}
             />
           </div>
