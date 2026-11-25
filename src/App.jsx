@@ -409,7 +409,7 @@ function App() {
                 id="stroke-count"
                 type="range"
                 min="5000"
-                max="1000000"
+                max="1500000"
                 step="5000"
                 value={strokeCount}
                 onChange={(e) => setStrokeCount(Number(e.target.value))}
@@ -417,7 +417,7 @@ function App() {
 
               <div className="range-labels">
                 <span>5,000 · Faster</span>
-                <span>1,000,000 · More detail</span>
+                <span>1,500,000 · More detail</span>
               </div>
             </div>
 
