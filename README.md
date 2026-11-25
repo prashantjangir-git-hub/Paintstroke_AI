@@ -18,21 +18,21 @@ Instead of simply applying a filter, Paintstroke AI recreates the painting proce
 
 What if you could watch a photograph being painted by an artist?
 
-Paintstroke AI explores this idea through a custom procedural painting engine built with HTML Canvas. It analyzes image colors and visual structures to generate textured brushstrokes that gradually recreate the original photograph as a painting.
+Paintstroke AI explores this idea through a custom procedural painting engine built with HTML Canvas. It analyses image colours and visual structures to generate textured brushstrokes that gradually recreate the original photograph as a painting.
 
-The result is not just an image transformation, it's a visualization of the artistic process itself.
+The result is not just an image transformation; it's a visualisation of the artistic process itself.
 
 ## 🚀 Features
 
 - **🖼️ Image Upload:** Upload your own photographs and transform them into paintings.
 - **🖌️ Stroke-by-Stroke Rendering:** Watch your painting emerge through thousands of individual brushstrokes.
-- **🎨 Multi-Pass Painting:** Four progressive painting stages build the artwork from broad color regions to fine details.
+- **🎨 Multi-Pass Painting:** Four progressive painting stages build the artwork from broad colour regions to fine details.
 - **✏️ Pencil Sketch Style:** Creates a graphite-inspired look using fine pencil strokes, sketch-like shading, and cross-hatching.
 - **🖌️ Thick Impasto Style:** Uses bold, chunky strokes and layered paint textures to create a thick, expressive oil-painting effect.
 - **🧭 Multiple Artistic Styles:** Switch between distinct rendering approaches, including the original painterly style, Pencil Sketch, and Thick Impasto.
 - **✨ Textured Brushstrokes:** Layered pigment, curved strokes, bristle tracks, and subtle dry-brush effects create a painterly appearance.
 - **⚙️ Customizable Brush Size:** Adjust brush size to influence the scale of generated strokes.
-- **🔢 Adjustable Stroke Count:** Choose between 5,000 and 1,000,000 strokes.
+- **🔢 Adjustable Stroke Count:** Choose between 5,000 and 15,00,000 strokes.
 - **⏩ Rendering Speed Control:** Adjust how quickly the painting process unfolds.
 - **📊 Live Progress:** Follow the painting process with real-time progress updates.
 - **⬇️ Export Artwork:** Download your completed painting as a PNG image.
@@ -78,15 +78,15 @@ The multi-pass painting workflow consists of four stages:
 |:---|:---|:---|
 | 01 | **Blocking in Colors** | Establishes broad color regions using larger brushstrokes. |
 | 02 | **Shaping Forms** | Builds recognizable shapes and visual structure. |
-| 03 | **Adding Details** | Introduces smaller strokes and emphasizes image contours. |
+| 03 | **Adding Details** | Introduces smaller strokes and emphasises image contours. |
 | 04 | **Final Touches** | Adds fine details and finishing brushwork. |
 
 ### Behind the Brushstrokes
 
 The engine uses several techniques to generate the painting:
 
-- Image downsampling and blurring to analyze visual information at different levels.
-- Pixel color sampling to determine the pigment of individual strokes.
+- Image downsampling and blurring to analyse visual information at different levels.
+- Pixel colour sampling to determine the pigment of individual strokes.
 - Image gradients to identify edges and guide brushstroke directions.
 - Variable brush widths, lengths, opacity, and curvature.
 - Multiple overlapping painting passes to build visual depth and texture.
@@ -217,19 +217,19 @@ There is plenty of room to take Paintstroke AI further.
 Some potential directions include:
 
 - Integration of neural style transfer or generative AI models.
-- Additional artistic styles, such as Watercolor, Charcoal, and other traditional media.
+- Additional artistic styles, such as Watercolour, Charcoal, and other traditional media.
 - More sophisticated brush physics and pigment blending.
 - Improved edge detection and stroke placement.
 - Better control over stroke length, direction, and density.
 - Pause, resume, and replay functionality.
 - Higher-resolution artwork exports.
-- Additional painting controls and customization options.
+- Additional painting controls and customisation options.
 
 ## 🤝 Contributing
 
 Suggestions, ideas, and contributions are welcome!
 
-If you have an idea that could make Paintstroke AI better, feel free to open an issue or submit a pull request.
+If you have an idea that could improve Paintstroke AI, feel free to open an issue or submit a pull request.
 
 1. Fork the repository.
 2. Create a new branch.
