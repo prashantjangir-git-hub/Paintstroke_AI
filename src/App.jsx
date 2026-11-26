@@ -427,7 +427,7 @@ function App() {
             </div>
             <div>
               <strong>Your own style</strong>
-              <p>Try different slyles of painting.</p>
+              <p>Try different styles of painting.</p>
             </div>
           </div>
 
