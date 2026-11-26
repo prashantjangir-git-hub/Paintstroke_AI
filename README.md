@@ -2,55 +2,56 @@
 
 ### Every picture has a brushstroke story.
 
-**Paintstroke AI** is an experimental browser-based photo-to-painting application that transforms ordinary photographs into artistic paintings through thousands of individually rendered brushstrokes.
+**Paintstroke AI** is an experimental, browser-based photo-to-painting application that recreates photographs as digital artwork using thousands of individually rendered brushstrokes.
 
-Instead of simply applying a filter, Paintstroke AI recreates the painting process: building up colors, shaping forms, adding details, and applying finishing touches, one stroke at a time.
+Rather than applying a simple image filter, the application builds an artwork progressively: starting with broad colour regions, shaping forms, adding details, and finishing with fine brushwork.
 
-🌐 **[Live Demo](https://prashantjangir-git-hub.github.io/Paintstroke_AI/)**
+[![Live Demo](https://shields.io🌐_Live_Demo-Visit_Site-2ea44f?style=for-the-badge)](https://prashantjangir-git-hub.github.io/Paintstroke_AI/)
+
+| 🚀 Project link |
+| :---: |
+| 🌐 **[Launch Paintstroke AI](https://prashantjangir-git-hub.github.io/Paintstroke_AI/)** |
+
+
 
 ## ✨ Overview
 
-What if you could watch a photograph being painted by an artist?
+Paintstroke AI explores what it might look like to watch a photograph being painted. Its custom procedural painting engine analyses image colours and visual structures, then uses that information to place textured strokes on an HTML Canvas.
 
-Paintstroke AI explores this idea through a custom procedural painting engine built with HTML Canvas. It analyses image colours and visual structures to generate textured brushstrokes that gradually recreate the original photograph as a painting.
+The experience includes an interactive landing page with a cursor-responsive, liquid-inspired visual, as well as a painting workspace where users can upload an image, choose a rendering style, adjust settings, and export the finished result.
 
-The landing page introduces the project with an animated, cursor-responsive liquid artwork. The painting workspace remains focused on the photo-to-painting experience.
-
-The result is not just an image transformation; it's a visualisation of the artistic process itself.
+The current painting engine runs locally in the browser. It does not rely on a hosted AI inference service or a trained neural network.
 
 ## 🚀 Features
 
-- **🖼️ Image Upload:** Upload your own photographs and transform them into paintings.
-- **🖌️ Stroke-by-Stroke Rendering:** Watch your painting emerge through thousands of individual brushstrokes.
-- **🎨 Multi-Pass Painting:** Four progressive painting stages build the artwork from broad colour regions to fine details.
-- **💧 Watercolor Blooms:** Creates soft, irregular watercolor-like blooms and pigment textures.
-- **✏️ Pencil Sketch Style:** Creates a graphite-inspired look using fine pencil strokes, sketch-like shading, and cross-hatching.
-- **🖌️ Thick Impasto Style:** Uses bold, chunky strokes and layered paint textures to create a thick, expressive oil-painting effect.
-- **🧭 Multiple Artistic Styles:** Switch between distinct rendering approaches, including the original painterly style, Watercolor Blooms, Pencil Sketch, and Thick Impasto.
-- **✨ Textured Brushstrokes:** Curved strokes, bristle tracks, pigment variation, and subtle dry-brush effects create a painterly appearance.
-- **⚙️ Customizable Brush Size:** Adjust brush size to influence the scale of generated strokes.
-- **🔢 Adjustable Stroke Count:** Choose the number of strokes used to build the artwork.
+- **🖼️ Image Upload:** Select or drag and drop a photograph into the painting workspace.
+- **🖌️ Stroke-by-Stroke Rendering:** Watch the image develop through thousands of individual brushstrokes.
+- **🎨 Three Painting Styles:** Choose between Impressionist, Pencil Sketch, and Watercolor Blooms.
+- **🧱 Multi-Pass Painting:** Four progressive stages build the artwork from broad colour regions to finer details.
+- **💧 Watercolor Texture:** Generate soft, irregular watercolor-inspired blooms, ragged edges, dry-brush texture, and layered pigment.
+- **✏️ Pencil Sketch:** Create a graphite-inspired appearance with fine marks, tonal shading, and sketch-like texture.
+- **🖌️ Expressive Brushwork:** Use curved strokes, bristle tracks, pigment variation, and dry-brush effects for a painterly finish.
+- **⚙️ Adjustable Brush Size:** Control the scale of generated brushstrokes.
+- **🔢 Adjustable Stroke Count:** Set the number of strokes used to create the artwork.
 - **⏩ Rendering Speed Control:** Adjust how quickly the painting process unfolds.
-- **📊 Live Progress:** Follow the painting process with real-time progress updates.
-- **⬇️ Export Artwork:** Download your completed painting as a PNG image.
-- **🫧 Interactive Liquid Hero:** The landing page features a large, animated, multi-blob liquid-inspired visual with warm coral, peach, orange, and pink gradients. It responds to pointer movement with smooth deformation and appears over the page's existing background.
-- **📱 Interactive Interface:** A responsive studio interface with smooth animations and interactive visual elements.
+- **📊 Live Progress:** Follow the rendering process as the artwork is created.
+- **⬇️ PNG Export:** Download the completed painting as a PNG image.
+- **🫧 Interactive Liquid Hero:** Explore a shader-based, liquid-inspired visual that responds to pointer movement.
+- **📱 Responsive Interface:** Use the studio interface across different screen sizes.
 
 ## 🖼️ Preview
 
 ### Landing Page
 
-<img width="1190" height="623" alt="image" src="https://github.com/user-attachments/assets/26d5e3b1-0daa-4727-b349-7ce3f63ed711" />
-
+<img width="1190" height="623" alt="Paintstroke AI landing page" src="https://github.com/user-attachments/assets/26d5e3b1-0daa-4727-b349-7ce3f63ed711" />
 
 ### Painting Workspace
 
-<img width="1085" height="674" alt="image" src="https://github.com/user-attachments/assets/5052ce8f-3f86-49e1-ab4f-7c8d959bebc6" />
-
+<img width="1085" height="674" alt="Paintstroke AI painting workspace" src="https://github.com/user-attachments/assets/5052ce8f-3f86-49e1-ab4f-7c8d959bebc6" />
 
 ### Painting in Progress
 
-<img width="1054" height="679" alt="Painting in progress" src="https://github.com/user-attachments/assets/623aeab1-b05c-464b-847a-59ff709b4986" />
+<img width="1054" height="679" alt="Painting in progress" src="https://github.com/user-attachments/assets/623aeab1-b05c-464c-8d76-20e477efc1e7" />
 
 ### Final Artwork
 
@@ -58,46 +59,43 @@ The result is not just an image transformation; it's a visualisation of the arti
 
 ## 🧠 How It Works
 
-Paintstroke AI uses a procedural, multi-layer Canvas rendering engine to recreate photographs as paintings.
+Paintstroke AI uses a procedural, multi-layer rendering engine built with JavaScript and HTML Canvas. It samples image colours and analyses visual structure to decide where to place brushstrokes and how those strokes should look.
 
-The painting process can be experienced through different artistic styles. Each style changes the way strokes, shading, and texture are generated.
-
-### Artistic Styles
+### Available Painting Styles
 
 | Style | Visual Character |
 |:---|:---|
-| **Impressionist / Painterly** | Layered, expressive brushwork that builds the image from broad colour regions to finer details. |
-| **Watercolor Blooms** | Soft, irregular pigment blooms and translucent colour effects inspired by watercolor painting. |
-| **Pencil Sketch** | Fine graphite-like marks, tonal shading, and cross-hatched strokes for a hand-drawn sketch appearance. |
-| **Thick Impasto** | Bold, heavy strokes and layered pigment textures inspired by thick oil paint and palette-knife techniques. |
+| **Impressionist** | Expressive, layered brushwork that builds the image from broad colour regions to finer details. |
+| **Pencil Sketch** | A graphite-inspired appearance created with fine marks, tonal shading, and sketch-like texture. |
+| **Watercolor Blooms** | Soft, irregular pigment effects with translucent colour, ragged edges, and dry-brush texture. |
 
 ### The Four Painting Stages
 
-The multi-pass painting workflow consists of four stages:
+The renderer builds the artwork through four progressive passes:
 
 | Stage | Process | Purpose |
 |:---|:---|:---|
-| 01 | **Blocking in Colors** | Establishes broad color regions using larger brushstrokes. |
+| 01 | **Blocking in Colors** | Establishes broad colour regions using larger strokes. |
 | 02 | **Shaping Forms** | Builds recognizable shapes and visual structure. |
-| 03 | **Adding Details** | Introduces smaller strokes and emphasises image contours. |
+| 03 | **Adding Detail** | Introduces smaller strokes and emphasises image contours. |
 | 04 | **Final Touches** | Adds fine details and finishing brushwork. |
 
 ### Behind the Brushstrokes
 
-The painting engine uses several techniques to generate the artwork:
+The painting engine uses techniques such as:
 
-- Image downsampling and blurring to analyse visual information at different levels.
-- Pixel colour sampling to determine the pigment of individual strokes.
-- Image gradients to identify edges and guide brushstroke directions.
+- Image downsampling and blurring to analyse visual information at different scales.
+- Pixel colour sampling to determine the colour of individual strokes.
+- Image-gradient calculations to identify edges and help guide stroke direction.
 - Variable brush widths, lengths, opacity, and curvature.
 - Layered painting passes to build visual depth and texture.
-- Progressive Canvas rendering to display the painting as it develops.
-- Time-budgeted rendering batches to help keep the interface responsive during large painting jobs.
-- Watercolor-specific rendering adjustments to limit excessive pigment buildup while retaining soft, irregular bloom characteristics.
+- Progressive Canvas rendering to show the artwork as it develops.
+- Time-budgeted rendering batches to help keep the interface responsive during larger painting jobs.
+- Watercolor-specific rendering adjustments for softer blooms and controlled pigment buildup.
 
-The landing-page liquid visual is a separate interactive visual effect. It uses animated, metaball-inspired forms and pointer-responsive deformation; it is not part of the photo-to-painting algorithm and should not be confused with a physically accurate fluid simulation.
+The landing-page liquid visual is a separate effect implemented with WebGL shaders. It uses animated, metaball-inspired forms and pointer-responsive deformation. It is a visual effect, not a physically accurate fluid simulation, and it is not part of the photo-to-painting algorithm.
 
-The painting result is rendered directly in the browser without requiring a hosted AI inference service.
+> **About the AI name:** Despite its name, the current painting renderer is algorithmic and procedural. It does not currently use a trained machine-learning or neural-style-transfer model. Neural model integration is a possible future direction.
 
 ## 🛠️ Tech Stack
 
@@ -105,27 +103,23 @@ The painting result is rendered directly in the browser without requiring a host
 |:---|:---|
 | **React 19** | Component-based user interface |
 | **Vite** | Development server and build tooling |
-| **HTML5 Canvas** | Procedural painting and brushstroke rendering |
-| **JavaScript** | Painting algorithms and application logic |
-| **WebGL / shader-based rendering** | Interactive liquid-inspired hero visual |
+| **JavaScript** | Application logic and painting algorithms |
+| **HTML5 Canvas** | Procedural brushstroke rendering |
+| **WebGL / GLSL shaders** | Interactive liquid-inspired hero visual |
 | **Framer Motion** | Interface animations and motion effects |
 | **Lucide React** | Interface icons |
-| **GitHub Actions** | Automated deployment |
+| **GitHub Actions** | Automated build and deployment workflow |
 | **GitHub Pages** | Website hosting |
 
 ## 💻 Getting Started
 
-Want to run Paintstroke AI locally or experiment with the painting engine?
-
-Follow these steps.
+You can run Paintstroke AI locally to explore the application or experiment with the painting engine.
 
 ### Prerequisites
 
-Make sure you have the following installed:
-
-- [Node.js](https://nodejs.org/) (Node.js 22 or newer recommended)
-- npm (included with Node.js)
-- Git
+- **Node.js:** 20.19+ or 22.12+
+- **npm:** Included with Node.js
+- **Git**
 
 ### 1. Clone the repository
 
@@ -151,7 +145,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL displayed in your terminal (usually `http://localhost:5173/`).
+Open the local URL shown in your terminal (usually `http://localhost:5173/`).
 
 ### 5. Build for production
 
@@ -165,76 +159,76 @@ To preview the production build locally:
 npm run preview
 ```
 
+You can also run the project's linter with:
+
+```bash
+npm run lint
+```
+
 ## 🎮 How to Use
 
 1. Open the [Paintstroke AI Studio](https://prashantjangir-git-hub.github.io/Paintstroke_AI/).
 2. Upload a photograph by dragging and dropping it into the workspace or browsing your files.
-3. Choose an artistic style, such as Impressionist / Painterly, Watercolor Blooms, Pencil Sketch, or Thick Impasto.
-4. Customize the available brush settings, stroke count, and rendering speed.
+3. Choose one of the available styles: **Impressionist**, **Pencil Sketch**, or **Watercolor Blooms**.
+4. Adjust the brush size, number of strokes, and rendering speed.
 5. Click **Start Painting**.
-6. Watch as the engine progressively transforms your photograph.
-7. Once rendering is complete, download your artwork as a PNG.
+6. Watch the painting engine progressively render your image.
+7. When the rendering is complete, download your artwork as a PNG.
 
-**Tip:** Experiment with different brush sizes and stroke counts to explore different levels of texture and detail. On the landing page, move your pointer over the liquid hero artwork to interact with its deformation.
+**Tip:** Try different combinations of brush size and stroke count to explore different textures and levels of detail. On the landing page, move your pointer over the liquid-inspired hero visual to interact with it.
 
 ## 🗺️ Project Structure
 
 ```text
 Paintstroke_AI/
 │
-├── public/
-│   ├── favicon.svg
-│   └── icons.svg
-│
-├── src/
-│   ├── assets/
-│   │   └── hero.png
-│   │
-│   ├── App.jsx
-│   ├── App.css
-│   ├── PaintingCanvas.jsx
-│   ├── index.css
-│   └── main.jsx
-│
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml
 │
+├── public/
+│   └── favicon.svg
+│
+├── src/
+│   ├── App.jsx
+│   ├── App.css
+│   ├── FluidBlob.jsx
+│   ├── PaintingCanvas.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── .gitignore
+├── .oxlintrc.json
+├── README.md
 ├── index.html
 ├── package.json
 ├── package-lock.json
 └── vite.config.js
 ```
 
-*The structure above reflects the project layout documented for this version. Individual implementation files may change as development continues.*
-
 ## 🚧 Current Development Status
 
-Paintstroke AI is an ongoing experimental project.
+Paintstroke AI is an experimental project under active development. The current version provides a browser-based procedural painting experience with three rendering styles: Impressionist, Pencil Sketch, and Watercolor Blooms.
 
-The current implementation focuses on developing a procedural painting engine capable of generating painterly effects through custom image-processing and Canvas-based drawing techniques. It includes multiple rendering styles, including Watercolor Blooms, Pencil Sketch, and Thick Impasto.
+The renderer uses custom image-processing and Canvas-based drawing techniques. It progressively plans and renders strokes in multiple passes, with adjustable brush size, stroke count, and rendering speed. Rendering is performed locally in the browser.
 
-The Watercolor Blooms renderer is designed to retain soft, irregular bloom effects while limiting excessive pigment accumulation. Rendering work is also organised into time-budgeted batches to help maintain interface responsiveness when processing large stroke counts.
+The landing page also features a separate WebGL liquid-inspired visual with pointer-responsive deformation.
 
-The landing page includes a separate, animated liquid-inspired hero visual with pointer-responsive deformation. This is a visual interaction effect, not a physical fluid simulation.
-
-The painting renderer uses custom image-processing and Canvas-based algorithms rather than a trained neural network. Painting results are generated locally in the browser and do not require a hosted AI inference service.
+The project does not currently include a trained AI model or neural style-transfer pipeline. The name reflects the project's creative direction and potential future development.
 
 ## 🔮 Future Possibilities
 
-There is plenty of room to take Paintstroke AI further.
-
-Some potential directions include:
+Potential areas for future development include:
 
 - Integration of neural style transfer or generative AI models.
-- Additional artistic styles, such as Charcoal and other traditional media.
+- Additional artistic styles, such as charcoal and other traditional media.
 - More sophisticated brush physics and pigment blending.
 - Improved edge detection and stroke placement.
-- Better control over stroke length, direction, and density.
+- Greater control over stroke length, direction, and density.
 - Pause, resume, and replay functionality.
 - Higher-resolution artwork exports.
-- Additional painting controls and customisation options.
-- Further refinement of the interactive liquid hero animation.
+- Additional painting controls and customization options.
+- Further refinement of the interactive liquid hero visual.
 
 ## 🤝 Contributing
 
