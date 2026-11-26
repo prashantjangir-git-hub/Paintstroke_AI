@@ -6,10 +6,13 @@
 
 Rather than applying a simple image filter, the application builds an artwork progressively: starting with broad colour regions, shaping forms, adding details, and finishing with fine brushwork.
 
-| 🚀 Project link |
-| :---: |
-| 🌐 **[Launch Paintstroke AI](https://prashantjangir-git-hub.github.io/Paintstroke_AI/)** |
+### Project link
 
+<p align="left">
+  <a href="https://prashantjangir-git-hub.github.io/Paintstroke_AI/">
+    <img src="https://img.shields.io/badge/Paintstroke AI-F2A36C" alt="Visit the website" />
+  </a>
+</p>
 
 
 ## ✨ Overview
