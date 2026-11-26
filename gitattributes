@@ -1,0 +1,30 @@
+# Normalize text files to LF line endings in the repository.
+* text=auto eol=lf
+
+# Keep common image, font, and archive assets as binary files.
+*.avif binary
+*.bmp  binary
+*.gif  binary
+*.ico  binary
+*.jpeg binary
+*.jpg  binary
+*.png  binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
+*.zip  binary
+
+# SVG files are text, so Git can show meaningful diffs.
+*.svg text eol=lf
+
+# Treat source code and project configuration as text with LF endings.
+*.css  text eol=lf
+*.html text eol=lf
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
