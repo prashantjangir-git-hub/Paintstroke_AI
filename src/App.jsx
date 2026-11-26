@@ -426,8 +426,8 @@ function App() {
               <Clock3 size={19} />
             </div>
             <div>
-              <strong>Your own pace</strong>
-              <p>Pause, replay and explore the process.</p>
+              <strong>Your own style</strong>
+              <p>Try different slyles of painting.</p>
             </div>
           </div>
 
@@ -457,7 +457,7 @@ function App() {
         {/* FOOTER */}
         <footer className="footer" id="about">
           <span>© 2026 Paintstroke AI</span>
-          <span>Made with curiosity and a little creativity.</span>
+          <span>Made with ❤️ by Prashant Jangir.</span>
 
           <a
             href="https://github.com/prashantjangir-git-hub/Paintstroke_AI"
